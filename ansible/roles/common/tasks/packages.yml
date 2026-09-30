@@ -1,0 +1,23 @@
+---
+- name: Install essential baseline utilities
+  ansible.builtin.apt:
+    name:
+      - curl
+      - iptables
+      - ebtables
+      - ethtool
+      - socat
+      - conntrack
+      - jq
+      - htop
+      - open-iscsi
+      - nfs-common
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Ensure iscsid service is running and enabled
+  ansible.builtin.systemd:
+    name: iscsid
+    state: started
+    enabled: true

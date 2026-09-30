@@ -1,0 +1,11 @@
+---
+# SSH connection settings
+ansible_user: admin
+ansible_ssh_private_key_file: ~/.ssh/id_rsa  # Update if your key is named differently
+
+# Global K3s settings (we will use these later)
+k3s_version: v1.37.0+k3s1
+
+cluster_subnet: 192.168.0.0/24
+ansible_become: true
+ansible_become_password: "{{ vault_ansible_become_password }}"

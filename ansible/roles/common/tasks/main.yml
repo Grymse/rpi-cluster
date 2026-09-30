@@ -1,0 +1,12 @@
+---
+- name: Install Base Packages
+  ansible.builtin.include_tasks: packages.yml
+
+- name: Disable Swap
+  ansible.builtin.include_tasks: swap.yml
+
+- name: Configure Kernel Modules and Sysctl
+  ansible.builtin.include_tasks: kernel.yml
+
+- name: Configure Raspberry Pi Cgroups
+  ansible.builtin.include_tasks: cgroups.yml

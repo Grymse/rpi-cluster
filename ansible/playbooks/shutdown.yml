@@ -1,0 +1,25 @@
+---
+- name: Gracefully shut down Raspberry Pi cluster
+  hosts: k3s_cluster
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Stop container runtime or cluster services (optional)
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: stopped
+      loop:
+        - k3s
+        - docker
+      failed_when: false
+
+    - name: Flush disk buffers to SD card / SSD
+      ansible.builtin.command: sync
+      changed_when: false
+
+    - name: Schedule system halt
+      ansible.builtin.command: /sbin/shutdown -h now
+      async: 1
+      poll: 0
+      ignore_errors: true

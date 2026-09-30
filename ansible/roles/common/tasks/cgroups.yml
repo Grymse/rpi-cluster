@@ -1,0 +1,16 @@
+---
+- name: Determine Raspberry Pi cmdline.txt location
+  ansible.builtin.stat:
+    path: /boot/firmware/cmdline.txt
+  register: cmdline_firmware
+
+- name: Set cmdline.txt path fact
+  ansible.builtin.set_fact:
+    rpi_cmdline_path: "{{ '/boot/firmware/cmdline.txt' if cmdline_firmware.stat.exists else '/boot/cmdline.txt' }}"
+
+- name: Ensure cgroup memory flags are set in cmdline.txt
+  ansible.builtin.replace:
+    path: "{{ rpi_cmdline_path }}"
+    regexp: '^((?!.*cgroup_memory=1 cgroup_enable=memory).*)$'
+    replace: '\1 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory'
+  notify: Reboot Node

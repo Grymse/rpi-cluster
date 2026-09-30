@@ -1,0 +1,9 @@
+---
+- name: Phase 1 - Bootstrap System Prerequisites
+  ansible.builtin.import_playbook: 01-bootstrap.yml
+
+- name: Phase 2 - Deploy Control Plane
+  ansible.builtin.import_playbook: 02-k3s-masters.yml
+
+- name: Phase 3 - Join Worker Nodes
+  ansible.builtin.import_playbook: 03-k3s-workers.yml

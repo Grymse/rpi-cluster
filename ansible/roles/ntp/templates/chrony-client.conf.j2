@@ -1,0 +1,13 @@
+# Internal master time servers
+{% for host in groups['worker_nodes'] %}
+server {{ hostvars[host]['ansible_host'] }} iburst
+{% endfor %}
+
+driftfile /var/lib/chrony/chrony.drift
+
+# Step clock on boot if offset > 1 second
+makestep 1 3
+
+rtcsync
+
+logdir /var/log/chrony

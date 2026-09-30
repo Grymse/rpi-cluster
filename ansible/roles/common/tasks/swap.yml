@@ -1,0 +1,31 @@
+---
+- name: Disable active swap immediately
+  ansible.builtin.command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+  changed_when: true
+
+- name: Remove swap entry from /etc/fstab
+  ansible.posix.mount:
+    name: none
+    fstype: swap
+    state: absent
+
+- name: Check if dphys-swapfile service exists
+  ansible.builtin.stat:
+    path: /etc/init.d/dphys-swapfile
+  register: dphys_swapfile
+
+- name: Disable, stop, and purge dphys-swapfile (Raspberry Pi default swap)
+  when: dphys_swapfile.stat.exists
+  block:
+    - name: Stop and disable dphys-swapfile
+      ansible.builtin.systemd:
+        name: dphys-swapfile
+        state: stopped
+        enabled: false
+
+    - name: Purge dphys-swapfile package
+      ansible.builtin.apt:
+        name: dphys-swapfile
+        state: absent
+        purge: true
