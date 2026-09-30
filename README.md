@@ -12,7 +12,7 @@ The system is split into three sections:
 
 The compute and data nodes resemble a production environment and I intend to build a smaller but similar environment with future upgrades. They all share the same cluster, and each group of nodes have a single node that is a part of the kubernetes control plane. I cannot dedicate nodes to only handling control plane work, so to avoid work on certain areas of the cluster to overwhelm the control plane tasks, I've decided to distribute it to each type of load.
 
-All 8 nodes have SSD's attached. RPI5 use top-hats and RPI4's use USB-to-NVME adapters. The dev nodes have a 2tb SSD each, the compute nodes 256gb each and the data nodes 512gb each. I decided to dedicate the largest SSD's to the dev nodes, as I intend to have code, artifact-repo, logging, telemetry and private fileshares available through these nodes. If I ever run out of space on the rpi5's, then I'll upgrade.
+All 8 nodes have SSD's attached. RPI5 use top-hats and RPI4's use USB-to-NVME adapters. The dev nodes have a 2tb SSD each, the compute nodes 256gb each and the data nodes 512gb each. I decided to dedicate the largest SSD's to the dev nodes, as they will store code, artifacts, logging, telemetry and fileshares. If I ever run out of space on the rpi5's, then I'll upgrade.
 
 ## Commands
 
